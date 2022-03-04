@@ -31,7 +31,8 @@ class ProductsList extends Component
                 "name" => $product->name,
                 "quantity" => 1,
                 "price" => $product->price,
-                "image" => $product->image
+                "image" => $product->image,
+                "seller_id" => $product->user_id,
             ];
         }
           

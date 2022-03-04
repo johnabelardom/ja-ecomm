@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
@@ -38,7 +40,11 @@ class ProductFactory extends Factory
         // // // echo "Original URL:   " . $url . "<br/>";
         // // echo "Redirected URL: " . $redirectedUrl . "<br/>";
 
+        $sids = User::where('role', 'seller')->pluck('id')->toArray();
+        $rand = array_rand($sids);
+
         return [
+            'user_id' => $sids[$rand],
             'name' => $this->faker->word(5),
             'description' => $this->faker->paragraph(100),
             'image' => 'https://picsum.photos/id/' . rand(1, 1000) . '/500/500', //$redirectedUrl, //'https://picsum.photos/500/500.jpg',

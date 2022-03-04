@@ -55,7 +55,7 @@
             </div>
             @endforeach
 
-            <a href="#" class="flex font-semibold text-indigo-600 text-sm mt-10">
+            <a href="/" class="flex font-semibold text-indigo-600 text-sm mt-10">
 
                 <svg class="fill-current mr-2 text-indigo-600 w-4" viewBox="0 0 448 512">
                     <path
@@ -73,8 +73,10 @@
             </div>
             <div>
                 <label class="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
-                <select class="block p-2 text-gray-600 w-full text-sm">
-                    <option>Standard shipping - $10.00</option>
+                <select class="block p-2 text-gray-600 w-full text-sm" wire:model="shipping_method" wire:change="$emit('charges.updated')">
+                    @foreach($shipping_methods as $sm => $method)
+                    <option value="{{ $sm }}">{{ $method['name'] }} - {{ $currency['symbol'] . $method['price'] }}</option>
+                    @endforeach
                 </select>
             </div>
             <!-- <div class="py-10">
@@ -82,14 +84,16 @@
                 <input type="text" id="promo" placeholder="Enter your code" class="p-2 text-sm w-full">
             </div>
             <button class="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button> -->
+            @if (! empty($cart_session))
             <div class="border-t mt-8">
                 <div class="flex font-semibold justify-between py-6 text-sm uppercase">
                     <span>Total cost</span>
                     <span>{{ $total }}</span>
                 </div>
-                <button
+                <button wire:click="checkout()"
                     class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
             </div>
+            @endif
         </div>
 
     </div>

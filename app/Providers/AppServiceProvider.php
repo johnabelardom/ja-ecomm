@@ -32,5 +32,12 @@ class AppServiceProvider extends ServiceProvider
             'symbol' => '$',
             'code' => 'USD',
         ]));
+        
+        View::share('shipping_methods', config('store.shipping_methods', [
+            'standard' => [
+                'name' => 'Standard Shipping',
+                'price' => '10.00'
+            ]
+        ]));
     }
 }

@@ -3,29 +3,28 @@
 namespace App\Http\Livewire;
 
 use App\Models\Product;
-use Illuminate\Support\Facades\View;
 use Livewire\Component;
 
-class Cart extends Component
+class MiniCart extends Component
 {
     public $cart_session = [];
     public $cart_charges_session = [];
     public $cart = [];
     public $total = 0.00;
     public $subtotal = 0.00;
-    public $shipping_method = 'standard';
+    public $shipping_method = '';
 
-    // protected $listeners = ['cart.updated' => 'computize'];
-    protected $listeners = ['charges.updated' => 'updateCharges'];
+    protected $listeners = ['cart.updated' => 'checkCart'];
 
     public function render()
     {
         $this->computize();
-        return view('livewire.cart');
+        return view('livewire.mini-cart');
     }
 
     public function __construct() {
         $this->cart_session = $this->cart = session()->get('cart', []);
+        $this->checkout_session = session()->get('checkout', []);
         $this->cart_charges_session = session()->get('cart_charges', [
             'shipping' => config('store.shipping_methods.' . $this->shipping_method, [
                 'name' => 'Standard Shipping',
@@ -33,6 +32,12 @@ class Cart extends Component
             ]),
         ]);
         $this->computize();
+    }
+
+    public function checkCart() {
+        if (empty($this->cart_session)) {
+            return redirect(route('cart'));
+        }
     }
 
     public function computize() {
@@ -114,31 +119,6 @@ class Cart extends Component
             $this->updateItem($product_id);
             session()->flash('success', 'Product removed successfully');
         }
-    }
-
-    public function updateCharges() {
-        $this->cart_charges_session = session()->get('cart_charges', [
-            'shipping' => config('store.shipping_methods.' . $this->shipping_method . '.price', 10.00)
-        ]);
-
-        $shipping = config('store.shipping_methods.' . $this->shipping_method, [
-            'name' => 'Standard Shipping',
-            'price' => 10.00
-        ]);
-        $this->cart_charges_session['shipping'] = [
-            "name" => $shipping['name'],
-            "quantity" => 1,
-            "price" => $shipping['price'],
-            // "image" => $product->image
-        ];
-        
-        session()->put('cart_charges', $this->cart_charges_session);
-
-        $this->computize();
-    }
-
-    public function checkout() {
-        return redirect(route('checkout'));
     }
 
 }

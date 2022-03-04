@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\View\Component;
 
 class StoreLayout extends Component
@@ -13,6 +14,8 @@ class StoreLayout extends Component
      */
     public function render()
     {
+        View::share('cartSession', session()->get('cart', []));
+
         return view('layouts.store');
     }
 }

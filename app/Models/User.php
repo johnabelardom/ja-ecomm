@@ -58,4 +58,19 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+
+    public function getOrders($email = '') {
+        if ($this->role == 'seller') {
+            $order_ids = OrderItem::where('seller_id', $this->id)->pluck('order_id')->toArray();
+            return Order::whereIn('id', $order_ids)->orderBy('created_at', 'desc');
+        } elseif (! empty($email)) {
+            return Order::whereIn('email', $email)->orderBy('created_at', 'desc');
+        } else {
+            return $this->hasMany(Order::class);
+        }
+    }
+
+    
+
 }
