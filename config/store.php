@@ -7,10 +7,12 @@ return [
     ],
     'shipping_methods' => [
         'standard' => [
+            'id' => 'standard',
             'name' => 'Standard Shipping',
             'price' => 10.00
         ],
         'express' => [
+            'id' => 'express',
             'name' => 'Express Shipping',
             'price' => 15.00
         ]

@@ -28,6 +28,7 @@ class Cart extends Component
         $this->cart_session = $this->cart = session()->get('cart', []);
         $this->cart_charges_session = session()->get('cart_charges', [
             'shipping' => config('store.shipping_methods.' . $this->shipping_method, [
+                'id' => 'standard',
                 'name' => 'Standard Shipping',
                 'price' => 10.00
             ]),
@@ -118,7 +119,11 @@ class Cart extends Component
 
     public function updateCharges() {
         $this->cart_charges_session = session()->get('cart_charges', [
-            'shipping' => config('store.shipping_methods.' . $this->shipping_method . '.price', 10.00)
+            'shipping' => config('store.shipping_methods.' . $this->shipping_method, [
+                'id' => 'standard',
+                'name' => 'Standard Shipping',
+                'price' => 10.00
+            ]),
         ]);
 
         $shipping = config('store.shipping_methods.' . $this->shipping_method, [
@@ -126,6 +131,7 @@ class Cart extends Component
             'price' => 10.00
         ]);
         $this->cart_charges_session['shipping'] = [
+            'id' => $shipping['id'],
             "name" => $shipping['name'],
             "quantity" => 1,
             "price" => $shipping['price'],

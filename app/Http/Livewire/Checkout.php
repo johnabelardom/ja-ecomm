@@ -52,6 +52,7 @@ class Checkout extends Component
         // dd($this->checkout_session);
         $this->cart_charges_session = session()->get('cart_charges', [
             'shipping' => config('store.shipping_methods.' . $this->shipping_method, [
+                'id' => 'standard',
                 'name' => 'Standard Shipping',
                 'price' => 10.00
             ]),
@@ -198,6 +199,7 @@ class Checkout extends Component
         ]); */
         session()->put('cart_charges', [
             'shipping' => config('store.shipping_methods.' . $this->shipping_method, [
+                'id' => 'standard',
                 'name' => 'Standard Shipping',
                 'price' => 10.00
             ]),

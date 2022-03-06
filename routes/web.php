@@ -46,3 +46,22 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     $orders = auth()->user()->getOrders()->paginate(10);
     return view('dashboard', compact('orders'));
 })->name('dashboard');
+
+
+// vue
+Route::group(['prefix' => 'vue', 'as' => 'vue.'], function() {
+    Route::get('/', function () {
+        return view('frontend-vue.home');
+    })->name('home');
+    
+    Route::get('/cart', function () {
+        return view('frontend-vue.cart');
+    })->name('cart');
+    
+    Route::get('/checkout', function () {
+        if (empty(session()->get('cart', [])))
+            return redirect(route('cart'));
+    
+        return view('frontend-vue.checkout');
+    })->name('checkout');
+});
