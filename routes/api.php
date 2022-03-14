@@ -38,3 +38,15 @@ Route::get('/products', [Api\ProductController::class, 'index']);
 Route::get('/orders', [Api\OrderController::class, 'index']);
 Route::get('/orders/{order}', [Api\OrderController::class, 'single']);
 Route::post('/order', [Api\OrderController::class, 'createOrder']);
+
+Route::get('/shipping/get-carriers', function() {
+    $config = array(
+        'apiKey' => 'TEST_oHSGjBa2D/QIWWtxfopJMds7qVeihx5dX5dLWqZXNx8',
+        'pageSize' => 75,
+        'retries' => 3,
+        'timeout' => new \DateInterval('PT15S')
+    );
+    $shipengine = new ShipEngine\ShipEngine($config);
+    return $shipengine->listCarriers();
+});
+Route::post('/shipping/calculate', [Api\ShopController::class, 'calculateShipping']);

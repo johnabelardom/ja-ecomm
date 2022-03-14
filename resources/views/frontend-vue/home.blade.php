@@ -45,6 +45,8 @@
                     <div v-for="(product, index) in products" class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
                         <Products v-bind:product="product" v-bind:currency="config.currency" v-bind:key="index"></Products>
                     </div>
+                    <br>
+                    <button class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" v-on:click="getProducts()" v-if="hasNextPage">Next</button>
                 </div>
 
             </div>

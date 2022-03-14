@@ -59,8 +59,8 @@ Route::group(['prefix' => 'vue', 'as' => 'vue.'], function() {
     })->name('cart');
     
     Route::get('/checkout', function () {
-        if (empty(session()->get('cart', [])))
-            return redirect(route('cart'));
+        // if (empty(session()->get('cart', [])))
+        //     return redirect(route('cart'));
     
         return view('frontend-vue.checkout');
     })->name('checkout');

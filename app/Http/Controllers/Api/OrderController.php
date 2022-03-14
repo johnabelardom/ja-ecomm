@@ -34,10 +34,11 @@ class OrderController extends Controller
             'customer.lastname' => 'required|max:255',
             'customer.email' => 'required|email|max:255',
             'customer.address' => 'required|max:255',
+            'customer.region' => 'required|max:255',
             'customer.city' => 'required',
             'customer.country' => 'required',
-            'customer.zipcode' => 'required',
-            'customer.notes' => 'string|max:255',
+            'customer.zipcode' => '',
+            'customer.notes' => 'max:255',
             
             // 'items' => 'required|array',
             // 'items.*.product_id' => 'required|exists:products,id',

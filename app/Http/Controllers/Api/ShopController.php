@@ -4,8 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use EsteIt\ShippingCalculator\Address;
+use EsteIt\ShippingCalculator\Calculator\BaseCalculator;
+use EsteIt\ShippingCalculator\Dimensions;
+use EsteIt\ShippingCalculator\Handler\DhlHandler;
+use EsteIt\ShippingCalculator\Package;
+use EsteIt\ShippingCalculator\Weight;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use ShipEngine\ShipEngine;
+use ShipEngine\ShipEngineClient;
+use ShipEngine\ShipEngineConfig;
+use ShipEngine\Message\ShipEngineException;
 
 class ShopController extends Controller
 {
@@ -152,6 +162,87 @@ class ShopController extends Controller
                 // "image" => $product->image
             ])
         ]);
+    }
+
+    public function calculateShipping(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'customer.firstname' => 'required|max:255',
+            'customer.lastname' => 'required|max:255',
+            'customer.email' => 'required|email|max:255',
+            'customer.address' => 'required|max:255',
+            'customer.region' => 'required|max:255',
+            'customer.city' => 'required',
+            'customer.country' => 'required|max:255',
+            'customer.zipcode' => 'max:255',
+            'customer.notes' => 'max:255',
+            
+            // 'items' => 'required|array',
+            // 'items.*.product_id' => 'required|exists:products,id',
+            // 'items.*.product_id' => 'required|exists:products,id',
+            'items.*.quantity' => 'required|integer',
+            'items.*.price' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+                
+        $config = array(
+            'apiKey' => 'TEST_oHSGjBa2D/QIWWtxfopJMds7qVeihx5dX5dLWqZXNx8',
+            'pageSize' => 75,
+            'retries' => 3,
+            'timeout' => new \DateInterval('PT15S')
+        );
+        $shipengine = new ShipEngine($config);
+
+        try {
+            //code...
+            
+            $config = new ShipEngineConfig($config);
+            $client = new ShipEngineClient();
+            $apiResponse = $client->post(
+                'v1/rates/estimate',
+                $config,
+                [
+                    'carrier_ids' => [
+                        'se-1960428',
+                        'se-1960427',
+                        'se-1960429',
+                    ],
+                    'from_country_code' => 'US',
+                    'from_postal_code' => '78756',
+                    'to_country_code' => $request->customer['country'],
+                    'to_postal_code' => $request->customer['zipcode'],
+                    'to_city_locality' => $request->customer['city'],
+                    'to_state_province' => $request->customer['region'],
+                    'weight' => [
+                        'value' => (function($items) {
+                            $total = 0;
+                            foreach($items as $i => $item) {
+                                $total += ($item['quantity']);
+                            }
+
+                            return $total;
+                        })($request->items),
+                        'unit' => 'ounce',
+                    ],
+                    'dimensions' => [
+                        'unit' => 'inch',
+                        'length' => 5.0,
+                        'width' => 5.0,
+                        'height' => 5.0,
+                    ],
+                    'confirmation' => 'none',
+                    'address_residential_indicator' => 'no',
+                ]
+            );
+
+            return $apiResponse;
+        } catch (ShipEngineException $th) {
+            return $th;
+        }
+        // return $shipengine->listCarriers();
+
     }
 
 

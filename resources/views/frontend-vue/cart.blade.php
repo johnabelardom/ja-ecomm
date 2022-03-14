@@ -46,21 +46,22 @@
                     <span class="font-semibold text-sm uppercase" v-text="'Items ' + Object.keys(cart_items).length"></span>
                     <span class="font-semibold text-sm" v-text="monify(subtotal)"></span>
                 </div>
-                <div v-if="config.currency">
+                <!-- <div v-if="config.currency">
                     <label class="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
                     <select class="block p-2 text-gray-600 w-full text-sm" v-model="shipping_method" v-on:change="updateCartCharges($event.target.value)">
                         <option v-for="(method, index) in config.shipping_methods" :key="index" v-bind:value="index" v-text="method.name + ' - ' + config.currency.symbol + method.price"></option>
                     </select>
-                </div>
+                </div> -->
                 <!-- <div class="py-10">
                     <label for="promo" class="font-semibold inline-block mb-3 text-sm uppercase">Promo Code</label>
                     <input type="text" id="promo" placeholder="Enter your code" class="p-2 text-sm w-full">
                 </div>
                 <button class="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button> -->
                 <div class="border-t mt-8" v-if="Object.keys(cart_items).length > 0">
-                    <div class="flex font-semibold justify-between py-6 text-sm uppercase">
-                        <span>Total cost</span>
-                        <span v-text="monify(total)"></span>
+                    <div class="flex font-semibold justify-between py-6 text-sm text-gray-500">
+                        <span class="italic">Continue to checkout to calculate shipping cost.</span>
+                        <!-- <span>Total cost</span>
+                        <span v-text="monify(total)"></span> -->
                     </div>
                     <button @click="gotoCheckout()"
                         class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
