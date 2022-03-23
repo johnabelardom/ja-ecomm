@@ -30,7 +30,7 @@
                     <Cart  v-bind:currency="config.currency" v-bind:cart-item="item"  v-bind:index="index"></Cart>
                 </div>
 
-                <a href="/vue" class="flex font-semibold text-indigo-600 text-sm mt-10">
+                <a href="/" class="flex font-semibold text-indigo-600 text-sm mt-10">
 
                     <svg class="fill-current mr-2 text-indigo-600 w-4" viewBox="0 0 448 512">
                         <path

@@ -18,16 +18,16 @@ Route::get('/', function () {
     return view('frontend.home');
 })->name('home');
 
-Route::get('/cart', function () {
-    return view('frontend.cart');
-})->name('cart');
+// Route::get('/cart', function () {
+//     return view('frontend.cart');
+// })->name('cart');
 
-Route::get('/checkout', function () {
-    if (empty(session()->get('cart', [])))
-        return redirect(route('cart'));
+// Route::get('/checkout', function () {
+//     if (empty(session()->get('cart', [])))
+//         return redirect(route('cart'));
 
-    return view('frontend.checkout');
-})->name('checkout');
+//     return view('frontend.checkout');
+// })->name('checkout');
 
 Route::get('/thank-you/{order}', function ($order_uid) {
     $order = Order::where('uid', $order_uid)->first();
@@ -49,7 +49,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 
 // vue
-Route::group(['prefix' => 'vue', 'as' => 'vue.'], function() {
+Route::group(['prefix' => '',], function() {
     Route::get('/', function () {
         return view('frontend-vue.home');
     })->name('home');

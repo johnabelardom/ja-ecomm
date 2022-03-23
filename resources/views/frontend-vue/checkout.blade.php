@@ -129,7 +129,7 @@
                                     <span class="text-red-600 text-sm block">Price: <span v-text="config.currency.symbol + (item.price)"></span></span>
                                     <span class="text-red-600 text-sm block">Qty: <span v-text="(item.quantity)"></span></span>
                                 </div>
-                                <div class="absolute right-0" style="cursor:pointer" v-on:click="removeItem(item.id)">
+                                <div class="absolute right-0" style="cursor:pointer" v-on:click="removeItem(index)">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                                         stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -161,7 +161,7 @@
                                 </select>
                                 <ul v-if="shipping_method.service_type">
                                     <li v-text="'Service: ' + shipping_method.service_type"></li>
-                                    <li v-text="'Delivery: ' + shipping_method.carrier_delivery_days + ' days'"></li>
+                                    <li v-text="'Delivery: ' + (! shipping_method.carrier_delivery_days ? '' : shipping_method.carrier_delivery_days + ' days')"></li>
                                     <li v-text="'Fee: ' + shipping_method.shipping_amount.amount + shipping_method.shipping_amount.currency"></li>
                                     <li v-text="'Service: ' + shipping_method.service_type"></li>
                                 </ul>
