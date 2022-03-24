@@ -312,7 +312,7 @@ if (document.querySelector('#cart')) {
                 }
 
                 if (cartItems[product_id]) {
-                    cartItems[product_id].quantity++;
+                    cartItems[product_id].quantity--;
                 }
 
                 __ecomm.setItem('cart_items', cartItems);
